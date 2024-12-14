@@ -20,7 +20,6 @@ class _AddNewPlaceScreenState extends ConsumerState<AddNewPlaceScreen> {
 
     ref.read(placesProvider.notifier).addNewPlace(
           Place(
-            id: DateTime.now().toString(),
             name: selectedPlace,
           ),
         );
