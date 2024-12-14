@@ -49,6 +49,7 @@ class _AddNewPlaceScreenState extends ConsumerState<AddNewPlaceScreen> {
                     if (value == null || value.isEmpty || value.length <= 1) {
                       return "Please enter a valid place";
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     selectedPlace = value!;

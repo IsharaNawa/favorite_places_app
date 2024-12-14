@@ -23,19 +23,22 @@ class _PlacesScreenState extends ConsumerState<PlacesScreen> {
   Widget build(BuildContext context) {
     final placesList = ref.watch(placesProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Your Places",
-        ),
-        actions: [
-          IconButton(
-            onPressed: addItem,
-            icon: const Icon(Icons.add),
+    Widget content = const Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "No places added yet.",
+            style: TextStyle(
+              color: Colors.white,
+            ),
           )
         ],
       ),
-      body: ListView(
+    );
+
+    if (placesList.isNotEmpty) {
+      content = ListView(
         children: [
           ...placesList.map(
             (place) => ListTile(
@@ -44,7 +47,21 @@ class _PlacesScreenState extends ConsumerState<PlacesScreen> {
             ),
           )
         ],
-      ),
-    );
+      );
+    }
+
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            "Your Places",
+          ),
+          actions: [
+            IconButton(
+              onPressed: addItem,
+              icon: const Icon(Icons.add),
+            )
+          ],
+        ),
+        body: content);
   }
 }
