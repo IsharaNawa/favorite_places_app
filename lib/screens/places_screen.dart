@@ -57,13 +57,20 @@ class _PlacesScreenState extends ConsumerState<PlacesScreen> {
             onTap: () {
               viewPlace(placesList[idx]);
             },
-            child: ListTile(
-              key: ValueKey(placesList[idx].id),
-              title: Text(
-                placesList[idx].name,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                key: ValueKey(placesList[idx].id),
+                leading: CircleAvatar(
+                  radius: 26,
+                  backgroundImage: FileImage(placesList[idx].image),
+                ),
+                title: Text(
+                  placesList[idx].name,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                ),
               ),
             ),
           );

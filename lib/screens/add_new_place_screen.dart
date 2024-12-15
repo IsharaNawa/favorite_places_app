@@ -14,7 +14,7 @@ class AddNewPlaceScreen extends ConsumerStatefulWidget {
 
 class _AddNewPlaceScreenState extends ConsumerState<AddNewPlaceScreen> {
   final _formKey = GlobalKey<FormState>();
-  String selectedPlace = "";
+  String? selectedPlace;
   File? selectedImage;
 
   void onSelectImage(File image) {
@@ -28,11 +28,14 @@ class _AddNewPlaceScreenState extends ConsumerState<AddNewPlaceScreen> {
       return;
     }
 
-    _formKey.currentState!.validate();
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
     _formKey.currentState!.save();
 
     ref.read(placesProvider.notifier).addNewPlace(
-          selectedPlace,
+          selectedPlace!,
           selectedImage!,
         );
 
