@@ -71,6 +71,12 @@ class _PlacesScreenState extends ConsumerState<PlacesScreen> {
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                 ),
+                subtitle: Text(
+                  placesList[idx].placeLocation.address,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                ),
               ),
             ),
           );

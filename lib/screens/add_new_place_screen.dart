@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:favorite_places_app/models/place.dart';
 import 'package:favorite_places_app/providers/places_provider.dart';
 import 'package:favorite_places_app/widgets/image_input.dart';
 import 'package:favorite_places_app/widgets/location_input.dart';
@@ -17,6 +18,7 @@ class _AddNewPlaceScreenState extends ConsumerState<AddNewPlaceScreen> {
   final _formKey = GlobalKey<FormState>();
   String? selectedPlace;
   File? selectedImage;
+  PlaceLocation? selectedPlaceLocation;
 
   void onSelectImage(File image) {
     setState(() {
@@ -24,21 +26,24 @@ class _AddNewPlaceScreenState extends ConsumerState<AddNewPlaceScreen> {
     });
   }
 
-  void addItem() {
-    if (selectedImage == null) {
-      return;
-    }
+  void onSelectCurrentLocation(PlaceLocation placeLocation) {
+    setState(() {
+      selectedPlaceLocation = placeLocation;
+    });
+  }
 
+  void addItem() {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-
     _formKey.currentState!.save();
+    if (selectedPlaceLocation == null || selectedPlace == null) {
+      return;
+    }
 
-    ref.read(placesProvider.notifier).addNewPlace(
-          selectedPlace!,
-          selectedImage!,
-        );
+    ref
+        .read(placesProvider.notifier)
+        .addNewPlace(selectedPlace!, selectedImage!, selectedPlaceLocation!);
 
     Navigator.pop(context);
   }
@@ -83,14 +88,19 @@ class _AddNewPlaceScreenState extends ConsumerState<AddNewPlaceScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const LocationInput(),
+                  LocationInput(
+                    onSelectCurrentLocation: onSelectCurrentLocation,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
                   SizedBox(
                     width: 135,
                     child: ElevatedButton(
-                      onPressed: selectedImage == null ? null : addItem,
+                      onPressed:
+                          selectedImage == null || selectedPlaceLocation == null
+                              ? null
+                              : addItem,
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
