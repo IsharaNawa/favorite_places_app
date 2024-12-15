@@ -1,5 +1,7 @@
+import 'package:favorite_places_app/models/place.dart';
 import 'package:favorite_places_app/providers/places_provider.dart';
 import 'package:favorite_places_app/screens/add_new_place_screen.dart';
+import 'package:favorite_places_app/screens/place_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,34 +21,53 @@ class _PlacesScreenState extends ConsumerState<PlacesScreen> {
     );
   }
 
+  void viewPlace(Place place) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => PlaceDetailScreen(
+          place: place,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final placesList = ref.watch(placesProvider);
 
-    Widget content = const Center(
+    Widget content = Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             "No places added yet.",
-            style: TextStyle(
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
           )
         ],
       ),
     );
 
     if (placesList.isNotEmpty) {
-      content = ListView(
-        children: [
-          ...placesList.map(
-            (place) => ListTile(
-              key: ValueKey(place.id),
-              title: Text(place.name),
+      content = ListView.builder(
+        itemCount: placesList.length,
+        itemBuilder: (ctx, idx) {
+          return GestureDetector(
+            onTap: () {
+              viewPlace(placesList[idx]);
+            },
+            child: ListTile(
+              key: ValueKey(placesList[idx].id),
+              title: Text(
+                placesList[idx].name,
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
+              ),
             ),
-          )
-        ],
+          );
+        },
       );
     }
 

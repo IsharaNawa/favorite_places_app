@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:uuid/uuid.dart';
 
 const idGenerator = Uuid();
 
 class Place {
-  Place({required this.name}) : id = idGenerator.v4();
+  Place({required this.name, required this.image}) : id = idGenerator.v4();
 
-  String id;
-  String name;
+  final String id;
+  final String name;
+  final File image;
 }
