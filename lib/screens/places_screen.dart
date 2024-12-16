@@ -13,6 +13,14 @@ class PlacesScreen extends ConsumerStatefulWidget {
 }
 
 class _PlacesScreenState extends ConsumerState<PlacesScreen> {
+  late Future<void> placesProviderFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    placesProviderFuture = ref.read(placesProvider.notifier).loadDatabase();
+  }
+
   void addItem() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -85,17 +93,31 @@ class _PlacesScreenState extends ConsumerState<PlacesScreen> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Your Places",
-          ),
-          actions: [
-            IconButton(
-              onPressed: addItem,
-              icon: const Icon(Icons.add),
-            )
-          ],
+      appBar: AppBar(
+        title: const Text(
+          "Your Places",
         ),
-        body: content);
+        actions: [
+          IconButton(
+            onPressed: addItem,
+            icon: const Icon(Icons.add),
+          )
+        ],
+      ),
+      body: FutureBuilder(
+        future: placesProviderFuture,
+        builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? const Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircularProgressIndicator(),
+                      ],
+                    ),
+                  )
+                : content,
+      ),
+    );
   }
 }

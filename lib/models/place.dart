@@ -14,8 +14,12 @@ class PlaceLocation {
 }
 
 class Place {
-  Place({required this.name, required this.image, required this.placeLocation})
-      : id = idGenerator.v4();
+  Place(
+      {required this.name,
+      required this.image,
+      required this.placeLocation,
+      id})
+      : id = id ?? idGenerator.v4();
 
   final String id;
   final String name;
